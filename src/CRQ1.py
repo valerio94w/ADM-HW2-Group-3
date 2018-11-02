@@ -12,10 +12,17 @@ from scipy.stats import ttest_ind
 pd.set_option("display.max_columns",10)
 
 # In[2]:
-Location = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-01.csv"   #here is where i save january data
+Location_Jan = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-01.csv"   #here is where i save january data
+Location_Feb = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-02.csv"   #here is where i save january data
+
 
 # In[3]:
-nytaxi =pd.read_csv(Location, usecols=[1,2,4,7,8,10,16])           #with command usecols i use only columns that i need to solve RQ2
+# Load January
+nytaxi = pd.read_csv(Location_Jan, usecols=[1,2,4,7,8,10,16]) 
+
+# In[4]
+# Load and concatenate February
+nytaxi = pd.concat([nytaxi, pd.read_csv(Location_Feb, usecols=[1,2,4,7,8,10,16])])
 
 # In[4]:
 nytaxi[:3]       
@@ -32,19 +39,35 @@ nyBorough[:3]
 # In[8]:
 df_full = nytaxi.join(nyBorough.set_index('LocationID'), on='PULocationID')
 
-taxi_and_Borough = df_full
-
 # In[9]
+# Convert dates to datetime type
+df_full.tpep_pickup_datetime = pd.to_datetime(df_full.tpep_pickup_datetime)
+df_full.tpep_dropoff_datetime = pd.to_datetime(df_full.tpep_dropoff_datetime)
+
+# In[10]
+# We clone the full dataframe to make cleanings on it
+df_clean = df_full
+
+# In[11]
+# Let's start cleaning up the data
+# First thing is to remove all the trips with 'tpep_pickup' < 2018
+df_clean = df_clean[df_clean.tpep_pickup_datetime.dt.year > 2017]
+
+# In[12]
+# Remove all the trips with duration null or negative
+df_clean = df_clean[df_clean.tpep_pickup_datetime < df_clean.tpep_dropoff_datetime]
+
+# In[13]
 # Let's check the mean values for all the columns by Borough
-grouped_mean_full = df_full.groupby(['Borough']).mean()
-grouped_mean_full= grouped_mean_full.drop(columns=['PULocationID','DOLocationID'])
+grouped_mean_full = df_clean.groupby(['Borough']).mean()
+grouped_mean_full= grouped_mean_full.drop(columns=['PULocationID','DOLocationID']) # Remove not relevant columns
 print(grouped_mean_full)
 # Queens has the highest average on 'trip_distance'
 # EWR has the highest fare amount average
 
 # In[10]
 # Here we check the distribution of the feature 'trip_distance'
-taxi_and_Borough['trip_distance'].plot.box()
+df_clean['trip_distance'].plot.box()
 
 # In[11]
 # Let's investigate Queens trip_distance
@@ -96,4 +119,17 @@ axes = grouped.plot(kind='hist', y="price_per_mile",bins=60, sharex=True, subplo
 # In[20]
 # H0 = means are the same
 # H1 = means are different
-ttest_ind(taxi_and_Borough[taxi_and_Borough.Borough == 'Manhattan']['price_per_mile'], taxi_and_Borough[taxi_and_Borough.Borough == 'Queens']['price_per_mile'])
+
+ttest_matrix = pd.DataFrame(index=taxi_and_Borough.Borough.unique(), columns=taxi_and_Borough.Borough.unique())
+
+for col1 in taxi_and_Borough.Borough.unique():
+    for col2 in taxi_and_Borough.Borough.unique():
+        ttest_matrix.loc[col1,col2] = ttest_ind(taxi_and_Borough[taxi_and_Borough.Borough == col1]['price_per_mile'], taxi_and_Borough[taxi_and_Borough.Borough == col2]['price_per_mile']).pvalue
+        
+# In[21]
+ttest_matrix = ttest_matrix.apply(pd.to_numeric)
+print(ttest_matrix)
+
+# We consider pvalue = 0.05 as a treshold to reject the H0.
+# Pvalues higher than 0.05 mean that Boroughs have the same mean (we accept the H0)
+# Pvalues lower than 0.05 mean that Boroughs have different mean (we reject the H0)
