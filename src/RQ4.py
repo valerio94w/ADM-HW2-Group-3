@@ -13,9 +13,6 @@ import pandas as pd
 import scipy.stats as stats
 
 # In[2]:
-from pandas import DataFrame, read_csv
-
-# In[2]:
 Location = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-01.csv"   #here is where i save january data
 
 # In[3]:

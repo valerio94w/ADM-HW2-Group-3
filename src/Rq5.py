@@ -6,216 +6,139 @@ Created on Fri Nov  2 15:51:30 2018
 """
 
 import pandas as pd
+import IPython.nbformat.current as nbf
+
+# In[1]
+Location_Jan = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-01.csv"
+Location_Feb = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-02.csv"
+Location_Mar = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-03.csv"
+Location_Apr = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-04.csv"
+Location_May = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-05.csv"
+Location_Jun = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-06.csv"
+
 # In[2]:
-from pandas import DataFrame, read_csv
-# In[]
-Location = r"F:\Valerio\yellow_tripdata_2018-01.csv"   #here is where i save january data
+# Load January
+nytaxi = pd.read_csv(Location_Jan, usecols=[1,2,4,7]) 
 
-# In[5]:
+# In[3]
+# Load and concatenate other months
+nytaxi = pd.concat([nytaxi, pd.read_csv(Location_Feb, usecols=[1,2,4,7])])
+nytaxi = pd.concat([nytaxi, pd.read_csv(Location_Mar, usecols=[1,2,4,7])])
+nytaxi = pd.concat([nytaxi, pd.read_csv(Location_Apr, usecols=[1,2,4,7])])
+nytaxi = pd.concat([nytaxi, pd.read_csv(Location_May, usecols=[1,2,4,7])])
+nytaxi = pd.concat([nytaxi, pd.read_csv(Location_Jun, usecols=[1,2,4,7])])
 
-nytaxi_january =pd.read_csv(Location, usecols=[1,2,4,7])
+# In[4]
+Location_2 =r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\taxi_zone_lookup.csv"     #here is where i save new vork borough data
 
-# In[]
-nytaxi_january.tpep_pickup_datetime = pd.to_datetime(nytaxi_january.tpep_pickup_datetime) 
-
-# modify type of tpep_pickup_datetime to DateTime
-
-# In[]
-nytaxi_january.tpep_dropoff_datetime = pd.to_datetime(nytaxi_january.tpep_dropoff_datetime)
- # modify type of tpep_dropoff_datetime to DateTime
-
-# In[]
-nytaxi_january['trip_duration'] = (nytaxi_january.tpep_dropoff_datetime - nytaxi_january.tpep_pickup_datetime).dt.total_seconds() 
-
-# it computes trip duration (for trip started in january)
-
-# In[]
-
-Location_february =r"F:\Valerio\yellow_tripdata_2018-02.csv"
-
-# In[]
-ny_taxi_february =pd.read_csv(Location_february, usecols=[1,2,4,7])
-
-# In[]
-
-Location_3="F:\Valerio\yellow_tripdata_2018-03.csv"
-
-# In[]
-
-nytaxi_march =pd.read_csv(Location_3, usecols=[1,2,4,7])
-
-# In[]
-Location_4="F:\Valerio\yellow_tripdata_2018-04.csv"
-
-# In[]
-nytaxi_april=pd.read_csv(Location_4, usecols=[1,2,4,7])
-
-# In[]
-
-Location_5="F:\Valerio\yellow_tripdata_2018-05.csv"
-
-# In[]
-
-nytaxi_may =pd.read_csv(Location_5, usecols=[1,2,4,7])
-
-# In[]
-
-Location_6="F:\Valerio\yellow_tripdata_2018-06.csv"
-
-# In[]
-
-nytaxi_july=pd.read_csv(Location_6, usecols=[1,2,4,7])
-
-# In[]
-ny_taxi_february.tpep_pickup_datetime = pd.to_datetime(ny_taxi_february.tpep_pickup_datetime) 
-
-# modify type of tpep_pickup_datetime to DateTime
-# In[]
-
-ny_taxi_february.tpep_dropoff_datetime = pd.to_datetime(ny_taxi_february.tpep_dropoff_datetime) 
-
-# modify type of tpep_dropoff_datetime to DateTime
-
-# In[]
-
-ny_taxi_february['trip_duration'] = (ny_taxi_february.tpep_dropoff_datetime - ny_taxi_february.tpep_pickup_datetime).dt.total_seconds() 
-
-# it computes trip duration (for trip started in february)
-
-# In[]
-nytaxi_march.tpep_pickup_datetime = pd.to_datetime(nytaxi_march.tpep_pickup_datetime) 
-
-# modify type of tpep_pickup_datetime to DateTime
-
-# In[]
-nytaxi_march.tpep_dropoff_datetime = pd.to_datetime(nytaxi_march.tpep_dropoff_datetime) 
-
-# modify type of tpep_dropoff_datetime to DateTime
-
-# In[]
-nytaxi_march['trip_duration'] = (nytaxi_march.tpep_dropoff_datetime - nytaxi_march.tpep_pickup_datetime).dt.total_seconds() 
-
-# it computes trip duration (for trip started in march)
-
-# In[]
-nytaxi_april.tpep_pickup_datetime = pd.to_datetime(nytaxi_april.tpep_pickup_datetime) 
-
-# modify type of tpep_pickup_datetime to DateTime
-# In[]
-nytaxi_april.tpep_dropoff_datetime = pd.to_datetime(nytaxi_april.tpep_dropoff_datetime) 
-
-# modify type of tpep_dropoff_datetime to DateTime
-
-# In[]
-nytaxi_april['trip_duration'] = (nytaxi_april.tpep_dropoff_datetime - nytaxi_april.tpep_pickup_datetime).dt.total_seconds() 
-
-# it computes trip duration (for trip started in april)
-
-# In[]
-nytaxi_may.tpep_pickup_datetime = pd.to_datetime(nytaxi_may.tpep_pickup_datetime) 
-
-# modify type of tpep_pickup_datetime to DateTime
-
-# In[]
-nytaxi_may.tpep_dropoff_datetime = pd.to_datetime(nytaxi_may.tpep_dropoff_datetime) 
-
-# modify type of tpep_dropoff_datetime to DateTime
-
-# In[]
-nytaxi_may['trip_duration'] = (nytaxi_may.tpep_dropoff_datetime - nytaxi_may.tpep_pickup_datetime).dt.total_seconds() 
-
-# it computes trip duration (for trip started in may)
-
-
-# In[]
-nytaxi_july.tpep_pickup_datetime = pd.to_datetime(nytaxi_july.tpep_pickup_datetime)
-
-# modify type of tpep_pickup_datetime to DateTime
-
-# In[]
-nytaxi_july.tpep_dropoff_datetime = pd.to_datetime(nytaxi_july.tpep_dropoff_datetime) # modify type of tpep_dropoff_datetime to DateTime
-
-# modify type of tpep_dropoff_datetime to DateTime
-
-
-# In[]
-nytaxi_july['trip_duration'] = (nytaxi_july.tpep_dropoff_datetime - nytaxi_july.tpep_pickup_datetime).dt.total_seconds() 
-
-#it shows duration trip (for trips started in july)
-
-
-# In[]
-
-nytaxi=pd.concat([nytaxi_january,ny_taxi_february,nytaxi_march,nytaxi_april,nytaxi_may,nytaxi_july], axis=1,join='inner')
-
-#now i obtain one dataset from the concatenation of monthly datasets. In the colmun called 'trip_duration' i've the duration of all trips and the month which this trip is done
-
-# In[]
-Location_2 = r"C:\Users\ValerioV\Downloads\taxi _zone_lookup.csv"
-
-# In[]
+# In[5]
 nyBorough =pd.read_csv(Location_2, usecols=[0,1])
 
-# In[]
-
+# In[6]
+#i do this join to obtain a dataset which help me to know the name of borough where trip starts
 nytaxi = nytaxi.join(nyBorough.set_index('LocationID'), on='PULocationID')
 
-#i do this join to obtain a dataset which help me to know the name of borough where trip starts
+# In[7]
+# modify type of tpep_pickup_datetime to DateTime
+nytaxi.tpep_pickup_datetime = pd.to_datetime(nytaxi.tpep_pickup_datetime) 
 
-# In[]
-nytaxi.plot.scatter(x='trip_duration', y='trip_distance')
- 
+# In[8]
+# modify type of tpep_dropoff_datetime to DateTime
+nytaxi.tpep_dropoff_datetime = pd.to_datetime(nytaxi.tpep_dropoff_datetime)
+
+# In[9]
+# it computes trip duration
+nytaxi['trip_duration'] = (nytaxi.tpep_dropoff_datetime - nytaxi.tpep_pickup_datetime).dt.total_seconds()
+
+# In[10]
 # it makes a plot where we can see relationship between trip duration and trip distance
 # there are a lot of outliers
- # In[]
+nytaxi.plot.hexbin(x='trip_duration', y='trip_distance')
 
-nytaxi = nytaxi.drop(nytaxi[(nytaxi.trip_duration<=0)].index)
+# In[11]
+# I clone the dataframe to make cleanings
+nytaxi_clean = nytaxi
  
-#i consider only trips which last at least 30 seconds
+# In[12]
+# I remove all the trips lasting less than 0 seconds and the ones lasting 0 seconds
+nytaxi_clean = nytaxi_clean.drop(nytaxi_clean[(nytaxi_clean.trip_duration<=0)].index)
+# I remove all the trips with trip distance higher than 25000
+nytaxi_clean = nytaxi_clean.drop(nytaxi_clean[(nytaxi_clean.trip_distance > 25000)].index)
+nytaxi_clean.plot.hexbin(x='trip_duration', y='trip_distance')
 
-# In[]
+# In[13]
+# I remove all the trips lasting more than 100000 seconds
+nytaxi_clean = nytaxi_clean.drop(nytaxi_clean[(nytaxi_clean.trip_duration > 100000)].index)
+# I remove all the trips with trip distance higher than 400
+nytaxi_clean = nytaxi_clean.drop(nytaxi_clean[(nytaxi_clean.trip_distance > 400)].index)
+nytaxi_clean.plot.hexbin(x='trip_duration', y='trip_distance')
 
-nytaxi = nytaxi.drop(nytaxi[(nytaxi.trip_duration>10000)].index)
+# In[14]
+# In order to clean the data, let's plot the trip_duration distribution
+nytaxi_clean.trip_duration.plot.hist(100)
 
-#i delete trips which last plus than 10000 seconds 
+# In[15]
+# Let's do a first cut to trip_duration 5000
+nytaxi_clean = nytaxi_clean.drop(nytaxi_clean[(nytaxi_clean.trip_duration > 5000)].index)
+nytaxi_clean.trip_duration.plot.hist(100)
 
-# In[]
-nytaxi = nytaxi.drop(nytaxi[(nytaxi.trip_distance>100)].index)
+# In[16]
+# Now let's plot the trip_distance distribution
+nytaxi_clean.trip_distance.plot.hist(100)
 
-#i delete trips which distance upper than 100 mile
+# In[17]
+# Let's do a first cut to trip_distance 35
+nytaxi_clean = nytaxi_clean.drop(nytaxi_clean[(nytaxi_clean.trip_distance > 35)].index)
+nytaxi_clean.trip_distance.plot.hist(100)
 
-# In[]
-nytaxi = nytaxi.drop(nytaxi[(nytaxi.trip_distance < 0.6)].index)
+# In[18]
+# Let's see the new heatmap plot
+nytaxi_clean.plot.hexbin(x='trip_duration', y='trip_distance')
 
-#i delete trips which duration lower than 0,60 mile
+# In[19]
+# The plot is not clear, let's investigate the heatmaps for each Borough
+nytaxi_clean[nytaxi_clean.Borough == 'Queens'].plot(kind='hexbin',x='trip_duration', y='trip_distance',gridsize=30, title='Queens')
+nytaxi_clean[nytaxi_clean.Borough == 'Manhattan'].plot(kind='hexbin',x='trip_duration', y='trip_distance',gridsize=30, title='Manhattan')
+nytaxi_clean[nytaxi_clean.Borough == 'EWR'].plot(kind='hexbin',x='trip_duration', y='trip_distance',gridsize=30, title='EWR')
+nytaxi_clean[nytaxi_clean.Borough == 'Staten Island'].plot(kind='hexbin',x='trip_duration', y='trip_distance',gridsize=30, title='Staten Island')
+nytaxi_clean[nytaxi_clean.Borough == 'Brooklyn'].plot(kind='hexbin',x='trip_duration', y='trip_distance',gridsize=30, title='Brooklyn')
+nytaxi_clean[nytaxi_clean.Borough == 'Bronx'].plot(kind='hexbin',x='trip_duration', y='trip_distance',gridsize=30, title='Bronx')
+nytaxi_clean[nytaxi_clean.Borough == 'Unknown'].plot(kind='hexbin',x='trip_duration', y='trip_distance',gridsize=30, title='Unknown')
 
-# In[]
+# In[20]
+# Queens is the borough with the mean trip_distance higher
+# But there is also a strange concentration of trip lasting only few seconds
+# Let's plot the distribution of the duration for Queens
+nytaxi_clean[nytaxi_clean.Borough == 'Queens'].trip_duration.hist(bins=100)
 
-nytaxi = nytaxi.drop('Unknown', axis=1)
+# In[21]
+# Let's remove trips with duration less than 60 seconds
+nytaxi_clean = nytaxi_clean.drop(nytaxi_clean[(nytaxi_clean.trip_duration <60)].index)
+nytaxi_clean[nytaxi_clean.Borough == 'Queens'].trip_duration.hist(bins=100)
 
-# delete trip which start from unknown borough
+# In[22]
+# Let's replot everything with new scales
+nytaxi_clean[nytaxi_clean.Borough == 'Queens'].plot(kind='hexbin',x='trip_duration', y='trip_distance',gridsize=30, title='Queens')
+nytaxi_clean[nytaxi_clean.Borough == 'Manhattan'].plot(kind='hexbin',x='trip_duration', y='trip_distance', title='Manhattan', xlim=(0,1800), ylim=(0,10))
+nytaxi_clean[nytaxi_clean.Borough == 'EWR'].plot(kind='hexbin',x='trip_duration', y='trip_distance', title='EWR', xlim=(0,400), ylim=(0,3))
+nytaxi_clean[nytaxi_clean.Borough == 'Staten Island'].plot(kind='hexbin',x='trip_duration', y='trip_distance',gridsize=30, title='Staten Island', xlim=(0,4000), ylim=(0,25))
+nytaxi_clean[nytaxi_clean.Borough == 'Brooklyn'].plot(kind='hexbin',x='trip_duration', y='trip_distance', title='Brooklyn', xlim=(0,1300), ylim=(0,6))
+nytaxi_clean[nytaxi_clean.Borough == 'Bronx'].plot(kind='hexbin',x='trip_duration', y='trip_distance', title='Bronx', xlim=(0,1300), ylim=(0,6))
+nytaxi_clean[nytaxi_clean.Borough == 'Unknown'].plot(kind='hexbin',x='trip_duration', y='trip_distance', title='Unknown', xlim=(0,1300), ylim=(0,5))
 
-# In[]
+# In[23]
+# In the EWR plot we see that data is pushed close to trip_distance = 0
+# Doing an histogram for trip_distance for EWR on the full dataframe nytaxi
+# It's clear that almost all the trips have trip_distance = 0
+# We guess this is because trips to/from the airport have a fixed tariff
+# Thus the drivers do not register the trip distance but only the price
+nytaxi[nytaxi.Borough == 'EWR'].trip_distance.hist(bins=100)
 
-nytaxi.plot.scatter(x='trip_duration', y='trip_distance')
+# In[24]
+# Because of this, we decide to remove all the trips starting from EWR
+nytaxi_clean = nytaxi_clean.drop(nytaxi_clean[(nytaxi_clean.Borough == "EWR")].index)
 
-#now we can see better way the plot
 
-# In[]
-nytaxi['trip_duration'].corr(nytaxi['trip_distance'])
-
-#it shows if exist correlation between trip duration and trip distance
-
-#show results by borough
-
-Borough_grouped= nytaxi.groupby('Borough',axis=1)
-
-# group data by borough
-
-# In[]
-
-Borough_grouped.plot(kind='scatter',x='trip_duration', y='trip_distance', c='Borough')
-
-# In[]
-
-Borough_grouped.plot.scatter(x='trip_duration', y='trip_distance', c='Borough')
+# In[17]
+# it shows if exist correlation between trip duration and trip distance
+nytaxi_clean['trip_duration'].corr(nytaxi_clean['trip_distance'])
