@@ -135,7 +135,7 @@ nytaxi_clean[nytaxi_clean.Borough == 'Unknown'].plot(kind='hexbin',x='trip_durat
 nytaxi[nytaxi.Borough == 'EWR'].trip_distance.hist(bins=100)
 
 # In[24]
-# Because of this, we decide to remove all the trips starting from EWR
+# Because of this, we decide to remove all the trips starting from EWR in all the calculations involving distance
 nytaxi_clean = nytaxi_clean.drop(nytaxi_clean[(nytaxi_clean.Borough == "EWR")].index)
 
 

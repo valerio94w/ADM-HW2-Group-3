@@ -1411,7 +1411,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Contrary than expected, we found no statistic evidence that 'Unknown' and 'Manhattan' are correlated, because p-value is 0 in all the tests.\n",
+    "Contrary that expected, we found no statistic evidence that 'Unknown' and 'Manhattan' are correlated, because p-value is 0 in all the tests.\n",
     "\n",
     "Thus, we remove all the trips coming from Unknown borough."
    ]
