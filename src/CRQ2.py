@@ -13,11 +13,11 @@ import folium as folium
 Location = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-01.csv"
 
 # In[5]:
-nytaxi_january =pd.read_csv(Location, usecols=[7,8])
+nytaxi_january =pd.read_csv(Location, usecols=[1,2,3,7,8])
 
 # In[10]
 df_grouped_pu = nytaxi_january.groupby(['PULocationID']).count() 
-df_grouped_pu.columns = ['count']
+df_grouped_pu = df_grouped_pu['passenger_count']
 
 # In[10]
 df_grouped_do = nytaxi_january.groupby(['DOLocationID']).count() 
@@ -27,15 +27,14 @@ df_grouped_do.columns = ['count']
 ny_json= r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\taxi_zones.json"
 
 # In[]
-taxiMap_pu = folium.Map(location=[40.7142700,-74.0059700], 
-                     zoom_start=10.5)
+taxiMap_pu = folium.Map(location=[40.7142700,-74.0059700], zoom_start=11)
 
 # In[]
 taxiMap_pu.choropleth(geo_data=ny_json,
                      fill_color='YlGn', fill_opacity=0.8, line_opacity=0.5,
                      data = df_grouped_pu,
                      key_on='feature.properties.LocationID',
-                     columns = [df_grouped_pu.index,'count'],
+                     columns = [df_grouped_pu.index,0],
                      legend_name = 'Taxis trips'
                      ) 
 
