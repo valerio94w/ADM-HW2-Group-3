@@ -58,3 +58,19 @@ taxiMap_do.choropleth(geo_data=ny_json,
 # In[]
 #Output the map to an .html file:
 taxiMap_do.save(outfile=r'C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\src\map_do.html')
+
+# In[]
+nytaxi_january['PU_DO'] = nytaxi_january["PULocationID"].map(str).add('p-d').add(nytaxi_january["DOLocationID"].map(str))
+
+# In[]
+new_grouped = nytaxi_january.groupby(['PU_DO']).count()
+
+# In[]
+new_grouped = new_grouped.drop(columns=['tpep_pickup_datetime','tpep_dropoff_datetime','PULocationID','DOLocationID','PU-DO'])
+
+# In[]
+new_grouped = new_grouped.sort_values(by='passenger_count', ascending=False)
+
+# In[]
+
+new_grouped[0:10].plot.bar()
