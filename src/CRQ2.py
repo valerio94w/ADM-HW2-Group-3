@@ -10,18 +10,35 @@ import pandas as pd
 import folium as folium
 
 # In[3]:
-Location = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-01.csv"
+Location_Jan = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-01.csv"
+Location_Feb = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-02.csv"
+Location_Mar = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-03.csv"
+Location_Apr = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-04.csv"
+Location_May = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-05.csv"
+Location_Jun = r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\yellow_tripdata_2018-06.csv"
 
-# In[5]:
-nytaxi_january =pd.read_csv(Location, usecols=[1,2,3,7,8])
+# In[2]:
+# Load January
+nytaxi = pd.read_csv(Location_Jan, usecols=[1,2,3,7,8]) 
+
+# In[3]
+# Load and concatenate other months
+nytaxi = pd.concat([nytaxi, pd.read_csv(Location_Feb, usecols=[1,2,3,7,8])])
+nytaxi = pd.concat([nytaxi, pd.read_csv(Location_Mar, usecols=[1,2,3,7,8])])
+nytaxi = pd.concat([nytaxi, pd.read_csv(Location_Apr, usecols=[1,2,3,7,8])])
+nytaxi = pd.concat([nytaxi, pd.read_csv(Location_May, usecols=[1,2,3,7,8])])
+nytaxi = pd.concat([nytaxi, pd.read_csv(Location_Jun, usecols=[1,2,3,7,8])])
+
 
 # In[10]
-df_grouped_pu = nytaxi_january.groupby(['PULocationID']).count() 
+df_grouped_pu = nytaxi.groupby(['PULocationID']).count() 
 df_grouped_pu = df_grouped_pu['passenger_count']
+df_grouped_pu = df_grouped_pu.order(ascending=False)
 
 # In[10]
-df_grouped_do = nytaxi_january.groupby(['DOLocationID']).count() 
+df_grouped_do = nytaxi.groupby(['DOLocationID']).count() 
 df_grouped_do.columns = ['count']
+df_grouped_do = df_grouped_do.order(ascending=False)
 
 # In[10]
 ny_json= r"C:\Users\mikyl\Documents\GitHub\ADM-HW2-Group-3\data\taxi_zones.json"
